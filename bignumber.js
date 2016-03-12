@@ -26,7 +26,7 @@
         // MAX_INT32 = 0x7fffffff,                   // 2^31 - 1
         POWS_TEN = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13],
         SQRT_BASE = 1e7,
-
+        MAX_SIGNIFICANT_DIGITS = 20,
         /*
          * The limit on the value of DECIMAL_PLACES, TO_EXP_NEG, TO_EXP_POS, MIN_EXP, MAX_EXP, and
          * the arguments to toExponential, toFixed, toFormat, and toPrecision, beyond which an
@@ -217,7 +217,7 @@
                 if (num) {
                     x.s = 1 / n < 0 ? ( str = str.slice(1), -1 ) : 1;
 
-                    if ( ERRORS && str.replace( /^0\.0*|\./, '' ).length > 15 ) {
+                    if ( ERRORS && str.replace( /^0\.0*|\./, '' ).length > MAX_SIGNIFICANT_DIGITS ) {
 
                         // 'new BigNumber() number type has more than 15 significant digits: {n}'
                         raise( id, tooManyDigits, n );
@@ -260,7 +260,7 @@
 
                 // Disallow numbers with over 15 significant digits if number type.
                 // 'new BigNumber() number type has more than 15 significant digits: {n}'
-                if ( num && ERRORS && len > 15 && ( n > MAX_SAFE_INTEGER || n !== mathfloor(n) ) ) {
+                if ( num && ERRORS && len > MAX_SIGNIFICANT_DIGITS && ( n > MAX_SAFE_INTEGER || n !== mathfloor(n) ) ) {
                     raise( id, tooManyDigits, x.s * n );
                 }
 
